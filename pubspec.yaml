@@ -40,6 +40,8 @@ dependencies:
   firebase_core: ^2.15.1
   cloud_firestore: ^4.8.5
   flutter_spinkit: ^5.2.0
+  url_launcher: ^6.1.12
+  rxdart: ^0.27.7
 
 dev_dependencies:
   flutter_test:
