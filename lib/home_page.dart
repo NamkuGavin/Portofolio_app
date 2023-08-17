@@ -114,9 +114,20 @@ class _HomePageState extends State<HomePage> {
             ),
             SliverToBoxAdapter(
               child: StreamBuilder<QuerySnapshot>(
-                  stream: dataBlog.collection("portofolio").snapshots(),
+                  stream: dataBlog.collection("blog").snapshots(),
                   builder: (context, snapshot) {
-                    if (snapshot.hasData) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SpinKitRing(color: Colors.blue);
+                    } else if (snapshot.connectionState ==
+                            ConnectionState.active &&
+                        snapshot.hasError) {
+                      _onWidgetDidBuild(() {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('${snapshot.error}'),
+                          backgroundColor: Colors.red,
+                        ));
+                      });
+                    } else {
                       final data = snapshot.data!.docs;
                       return Container(
                         color: const Color(0xFFEDF7FA),
@@ -137,6 +148,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: data.length,
                                 itemBuilder: (context, index) {
@@ -168,9 +180,9 @@ class _HomePageState extends State<HomePage> {
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            right: 20),
+                                                            right: 15),
                                                     child: Text(
-                                                      "12 Feb 2020",
+                                                      data[index]['date'],
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: GoogleFonts.heebo(
@@ -181,18 +193,20 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                   const VerticalDivider(
                                                       color: Colors.black),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 20),
-                                                    child: Text(
-                                                      "Design, Pattern",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: GoogleFonts.heebo(
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontSize: 15),
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 15),
+                                                      child: Text(
+                                                        data[index]['category'],
+                                                        style:
+                                                            GoogleFonts.heebo(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                fontSize: 15),
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -200,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                           ),
                                           Text(
-                                            "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+                                            data[index]['contain'],
                                             style: GoogleFonts.heebo(
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 15),
@@ -215,17 +229,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       );
-                    } else if (snapshot.connectionState ==
-                            ConnectionState.active &&
-                        snapshot.hasError) {
-                      _onWidgetDidBuild(() {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('${snapshot.error}'),
-                          backgroundColor: Colors.red,
-                        ));
-                      });
                     }
-                    return const SpinKitRing(color: Colors.blue);
+                    return Container();
                   }),
             ),
           ],
