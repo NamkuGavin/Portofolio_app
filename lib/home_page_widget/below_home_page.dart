@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_portofolio/work_page.dart';
+import 'package:my_portofolio/page/work_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BelowHomePage extends StatelessWidget {
