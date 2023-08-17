@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_portofolio/widget/middle_home_page.dart';
+import 'package:my_portofolio/home_page_widget/middle_home_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'widget/upper_home_page.dart';
+import 'home_page_widget/below_home_page.dart';
+import 'home_page_widget/upper_home_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -38,6 +39,7 @@ class _HomePageState extends State<HomePage> {
           slivers: [
             SliverToBoxAdapter(child: UpperHomePage(dataBlog: dataBlog)),
             SliverToBoxAdapter(child: MiddleHomePage(dataBlog: dataBlog)),
+            const SliverToBoxAdapter(child: BelowHomePage()),
           ],
         ),
       ),
