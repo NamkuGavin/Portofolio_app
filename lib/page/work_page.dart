@@ -27,6 +27,12 @@ class _WorkPageState extends State<WorkPage> {
         "2022",
         "Application",
         "Creating an app that contains school materials and questions allows students to access school materials and questions anytime and anywhere..."),
+    WorkModel(
+        "assets/image/app_edufin.png",
+        "Financial information service application for you",
+        "2022",
+        "Application",
+        "Scan Money, The feature scans and recognizes currency amounts more quickly and accurately..."),
   ];
   final String _discord = 'https://discordapp.com/users/593593353463922688';
   final String _instagram =
@@ -82,8 +88,7 @@ class _WorkPageState extends State<WorkPage> {
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding:
-                    const EdgeInsets.only(bottom: 50, left: 25, right: 25),
+                padding: const EdgeInsets.only(bottom: 50, left: 25, right: 25),
                 child: ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -107,7 +112,8 @@ class _WorkPageState extends State<WorkPage> {
                         children: [
                           InkWell(
                               onTap: () => _launchUrl(context, _discord),
-                              child: SvgPicture.asset("assets/icon/discord.svg")),
+                              child:
+                                  SvgPicture.asset("assets/icon/discord.svg")),
                           const SizedBox(width: 20),
                           InkWell(
                               onTap: () => _launchUrl(context, _instagram),
@@ -115,7 +121,8 @@ class _WorkPageState extends State<WorkPage> {
                           const SizedBox(width: 20),
                           InkWell(
                               onTap: () => _launchUrl(context, _github),
-                              child: SvgPicture.asset("assets/icon/github.svg")),
+                              child:
+                                  SvgPicture.asset("assets/icon/github.svg")),
                         ],
                       ),
                     ),
