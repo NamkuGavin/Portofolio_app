@@ -6,8 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_portofolio/widget/work_item.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../model/work_model.dart';
-
 class WorkPage extends StatefulWidget {
   const WorkPage({Key? key}) : super(key: key);
 
