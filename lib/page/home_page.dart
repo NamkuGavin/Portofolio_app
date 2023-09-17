@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
           slivers: [
             SliverToBoxAdapter(child: UpperHomePage(dataBlog: dataBlog)),
             SliverToBoxAdapter(child: MiddleHomePage(dataBlog: dataBlog)),
-            const SliverToBoxAdapter(child: BelowHomePage()),
+            SliverToBoxAdapter(child: BelowHomePage(dataBlog: dataBlog)),
           ],
         ),
       ),

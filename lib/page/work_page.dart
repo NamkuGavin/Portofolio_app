@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_portofolio/widget/work_item.dart';
@@ -14,26 +16,7 @@ class WorkPage extends StatefulWidget {
 }
 
 class _WorkPageState extends State<WorkPage> {
-  List<WorkModel> listWork = [
-    WorkModel(
-        "assets/image/app_quran.png",
-        "Designing Al Qur'an App",
-        "2022",
-        "Application",
-        "Creating a Quran app is a very worthwhile step as it can provide great benefits to its users. Here are some reasons why you might want to create a Quran app..."),
-    WorkModel(
-        "assets/image/app_school.png",
-        "Create an application containing school materials and questions",
-        "2022",
-        "Application",
-        "Creating an app that contains school materials and questions allows students to access school materials and questions anytime and anywhere..."),
-    WorkModel(
-        "assets/image/app_edufin.png",
-        "Financial information service application for you",
-        "2022",
-        "Application",
-        "Scan Money, The feature scans and recognizes currency amounts more quickly and accurately..."),
-  ];
+  FirebaseFirestore dataBlog = FirebaseFirestore.instance;
   final String _discord = 'https://discordapp.com/users/593593353463922688';
   final String _instagram =
       'https://instagram.com/gavinarasyi?igshid=MzRlODBiNWFlZA==';
@@ -56,6 +39,12 @@ class _WorkPageState extends State<WorkPage> {
   bool _isValidUrl(String url) {
     Uri? uri = Uri.tryParse(url);
     return uri != null && uri.isAbsolute;
+  }
+
+  void _onWidgetDidBuild(Function callback) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      callback();
+    });
   }
 
   @override
@@ -87,17 +76,38 @@ class _WorkPageState extends State<WorkPage> {
               ),
             ),
             SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 50, left: 25, right: 25),
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: listWork.length,
-                  itemBuilder: (context, index) {
-                    return WorkItem(workModel: listWork[index]);
-                  },
-                ),
-              ),
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: dataBlog.collection("featured_work").snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                          child: SpinKitRing(color: Colors.blue));
+                    } else if (snapshot.connectionState ==
+                            ConnectionState.active &&
+                        snapshot.hasError) {
+                      _onWidgetDidBuild(() {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('${snapshot.error}'),
+                          backgroundColor: Colors.red,
+                        ));
+                      });
+                    } else {
+                      final data = snapshot.data!.docs;
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: 50, left: 25, right: 25),
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: data.length,
+                          itemBuilder: (context, index) {
+                            return WorkItem(data: data, index: index);
+                          },
+                        ),
+                      );
+                    }
+                    return Container();
+                  }),
             ),
             SliverToBoxAdapter(
               child: Padding(
