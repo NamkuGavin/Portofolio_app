@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_portofolio/model/work_model.dart';
 
 class WorkItem extends StatelessWidget {
-  final WorkModel workModel;
-  const WorkItem({Key? key, required this.workModel}) : super(key: key);
+  final List<QueryDocumentSnapshot<Object?>> data;
+  final int index;
+  const WorkItem({Key? key, required this.data, required this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +20,15 @@ class WorkItem extends StatelessWidget {
             height: 250,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(workModel.image), fit: BoxFit.cover),
+                    image: NetworkImage(data[index]['image']),
+                    fit: BoxFit.cover),
                 borderRadius: const BorderRadius.all(Radius.circular(12))),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 10),
           child: Text(
-            workModel.title,
+            data[index]['title'],
             style: GoogleFonts.heebo(fontWeight: FontWeight.bold, fontSize: 22),
           ),
         ),
@@ -42,7 +46,7 @@ class WorkItem extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
                   child: Text(
-                    workModel.year,
+                    data[index]['year'],
                     style: GoogleFonts.heebo(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -51,7 +55,7 @@ class WorkItem extends StatelessWidget {
                 ),
               ),
               Text(
-                workModel.type,
+                data[index]['type'],
                 style: GoogleFonts.heebo(
                     color: const Color(0xFF8695A4),
                     fontWeight: FontWeight.w400,
@@ -63,7 +67,7 @@ class WorkItem extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 15),
           child: Text(
-            workModel.contain,
+            data[index]['contain'],
             style: GoogleFonts.heebo(fontWeight: FontWeight.w400, fontSize: 15),
           ),
         ),
